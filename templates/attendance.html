@@ -1,0 +1,39 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Attendance Tracker</title>
+</head>
+<body>
+<center>
+    <h2>Student Attendance Tracker</h2>
+    <h3>Mark Student Attendance</h3>
+
+    <form action="/success" method="post">
+
+        <label>Student ID:</label>
+        <input type="text" name="student_id" required>
+        <br><br>
+
+        <label>Student Name:</label>
+        <input type="text" name="student_name" required>
+        <br><br>
+
+        <label>Attendance Date:</label>
+        <input type="date" name="attendance_date" required>
+        <br><br>
+
+        <label>Attendance Status:</label>
+        <select name="status" required>
+            <option value="">Select Status</option>
+            <option value="Present">Present</option>
+            <option value="Absent">Absent</option>
+        </select>
+        <br><br>
+
+        <button type="submit">Submit Attendance</button>
+
+    </form>
+</center>
+</body>
+</html>
