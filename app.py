@@ -17,7 +17,7 @@ def success():
     student_name = request.form['student_name']
     attendance_date = request.form['attendance_date']
     status = request.form['status']
-    subject_name = request.form['subject_name']
+    subject_name = request.form.get('subject_name', '')    
     return render_template(
         'success.html',
         student_id=student_id,
