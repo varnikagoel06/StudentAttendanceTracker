@@ -17,12 +17,13 @@ def success():
     student_name = request.form['student_name']
     attendance_date = request.form['attendance_date']
     status = request.form['status']
-
+    subject_name = request.form['subject_name']
     return render_template(
         'success.html',
         student_id=student_id,
         student_name=student_name,
         attendance_date=attendance_date,
+        subject_name=subject_name,
         status=status
     )
 
