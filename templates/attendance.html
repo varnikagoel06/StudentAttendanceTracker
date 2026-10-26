@@ -10,6 +10,10 @@
     <h3>Daily Student Attendance Management</h3>
     <p>Manage and record student attendance efficiently.</p>
     <p>Enter student details below to mark daily attendance.</p>
+    <p>Subject Name: {{ subject_name }}</p>
+    <label>Subject Name:</label>
+    <input type="text" name="subject_name" required>
+    <br><br>
     <form action="/success" method="post">
 
         <label>Student ID:</label>
