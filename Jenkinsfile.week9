@@ -1,0 +1,58 @@
+
+pipeline {
+    agent any
+
+    environment {
+        PATH = "/usr/local/bin:/opt/homebrew/bin:${env.PATH}"
+    }
+
+    stages {
+        stage('Check Tools') {
+            steps {
+                sh 'docker version'
+                sh 'kubectl get nodes'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t student-attendance-tracker:latest .'
+            }
+        }
+
+        stage('Load Image into Kubernetes') {
+            steps {
+                sh '''
+                    docker save student-attendance-tracker:latest |
+                    docker exec -i desktop-control-plane ctr -n k8s.io images import -
+                '''
+            }
+        }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                sh 'kubectl apply -f deployment.yaml'
+                sh 'kubectl apply -f service.yaml'
+                sh 'kubectl rollout restart deployment/attendance-app'
+                sh 'kubectl rollout status deployment/attendance-app --timeout=180s'
+            }
+        }
+
+        stage('Verify Deployment') {
+            steps {
+                sh 'kubectl get deployments'
+                sh 'kubectl get pods'
+                sh 'kubectl get services'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Week 9 Kubernetes Deployment SUCCESS!'
+        }
+        failure {
+            echo 'Pipeline failed. Check console output.'
+        }
+    }
+}
