@@ -1,0 +1,43 @@
+
+pipeline {
+    agent any
+
+    stages {
+        stage('Check Docker') {
+            steps {
+                sh 'docker version'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t student-attendance-week7 .'
+            }
+        }
+
+        stage('Run Docker Container') {
+            steps {
+                sh '''
+                    docker rm -f attendance-jenkins || true
+                    docker run -d --name attendance-jenkins \
+                    -p 5002:5000 student-attendance-week7
+                '''
+            }
+        }
+
+        stage('Verify Container') {
+            steps {
+                sh 'docker ps --filter name=attendance-jenkins'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Week 7 Docker Pipeline SUCCESS!'
+        }
+        failure {
+            echo 'Pipeline failed. Check console output.'
+        }
+    }
+}
